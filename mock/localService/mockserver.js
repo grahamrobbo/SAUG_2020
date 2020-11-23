@@ -10,7 +10,7 @@ sap.ui.define(
 
 		var oMockServer,
 			_sAppPath = "sap/ui/core/sample/RoutingNestedComponent/",
-			_sJsonFilesPath = _sAppPath + "test/localService/mockdata"
+			_sJsonFilesPath = _sAppPath + "mock/localService/mockdata"
 
 		var oMockServerInterface = {
 			/**

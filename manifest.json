@@ -19,7 +19,7 @@
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
-					"localUri": "test/localService/metadata.xml"
+					"localUri": "mock/localService/metadata.xml"
 				}
 			}
 		}
