@@ -1,0 +1,170 @@
+{
+	"_version": "1.21.0",
+	"sap.app": {
+		"id": "sap.ui.core.sample.RoutingNestedComponent",
+		"type": "application",
+		"i18n": {
+			"bundleUrl": "i18n/i18n.properties",
+			"supportedLocales": [""],
+			"fallbackLocale": ""
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {
+			"mainService": {
+				"uri": "/myservice/V2/Northwind.svc",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "test/localService/metadata.xml"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"contentDensities": {
+			"cozy": true,
+			"compact": true
+		},
+		"rootView": {
+			"viewName": "sap.ui.core.sample.RoutingNestedComponent.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "app"
+		},
+		"componentUsages": {
+			"suppliersComponent": {
+				"name": "sap.ui.core.sample.RoutingNestedComponent.reuse.suppliers",
+				"settings": {},
+				"componentData": {},
+				"lazy": true
+			},
+			"categoriesComponent": {
+				"name": "sap.ui.core.sample.RoutingNestedComponent.reuse.categories",
+				"settings": {},
+				"componentData": {},
+				"lazy": true
+			},
+			"productsComponent": {
+				"name": "sap.ui.core.sample.RoutingNestedComponent.reuse.products",
+				"settings": {},
+				"componentData": {},
+				"lazy": true
+			}
+		},
+		"dependencies": {
+			"minUI5Version": "1.75.0",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.tnt": {}
+			}
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "sap.ui.core.sample.RoutingNestedComponent.i18n.i18n",
+					"supportedLocales": [""],
+					"fallbackLocale": ""
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"path": "sap.ui.core.sample.RoutingNestedComponent.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"transition": "slide",
+				"bypassed": {
+					"target": "notFound"
+				},
+				"async": true,
+				"propagateTitle": true
+			},
+			"routes": [
+				{
+					"name": "home",
+					"pattern": "",
+					"target": "home"
+				},
+				{
+					"name": "suppliers",
+					"pattern": "suppliers",
+					"target": {
+						"name": "suppliers",
+						"prefix": "s"
+					}
+				},
+				{
+					"name": "categories",
+					"pattern": "categories",
+					"target": {
+						"name": "categories",
+						"prefix": "c"
+					}
+				},
+				{
+					"name": "products",
+					"pattern": "products",
+					"target": {
+						"name": "products",
+						"prefix": "p"
+					}
+				}
+			],
+			"targets": {
+				"home": {
+					"type": "View",
+					"id": "home",
+					"name": "Home",
+					"title": "Home"
+				},
+				"suppliers": {
+					"type": "Component",
+					"usage": "suppliersComponent",
+					"title": "Supplier",
+					"id": "suppliersComponent"
+				},
+				"categories": {
+					"type": "Component",
+					"usage": "categoriesComponent",
+					"title": "Category",
+					"id": "categoriesComponent"
+				},
+				"products": {
+					"type": "Component",
+					"usage": "productsComponent",
+					"title": "Product",
+					"id": "productsComponent"
+				},
+				"notFound": {
+					"type": "View",
+					"id": "notFound",
+					"name": "NotFound",
+					"transition": "show"
+				}
+			}
+		}
+	}
+}
