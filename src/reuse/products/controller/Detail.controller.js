@@ -49,6 +49,27 @@ sap.ui.define(
 						},
 					})
 				},
+				onPressSupplier: function (oEvent) {
+					const sSupplierID = oEvent
+						.getSource()
+						.getBindingContext()
+						.getProperty("SupplierID")
+
+					this.getOwnerComponent().fireEvent("toSupplier", {
+						supplierID: sSupplierID,
+					})
+				},
+
+				onPressCategory: function (oEvent) {
+					const sCategoryID = oEvent
+						.getSource()
+						.getBindingContext()
+						.getProperty("CategoryID")
+
+					this.getOwnerComponent().fireEvent("toCategory", {
+						categoryID: sCategoryID,
+					})
+				},
 			}
 		)
 	}

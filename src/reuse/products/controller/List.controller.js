@@ -18,11 +18,14 @@ sap.ui.define(
 				},
 
 				_onMatched: function (oEvent) {
+					// const oArgs = oEvent.getParameter("arguments")
+					// const sPath = decodeURIComponent(oArgs.basepath || "") + "/Products"
 					const oTable = this.getView().byId("table")
 					const that = this
 
 					oTable.bindItems({
 						path: "/Products",
+						// path: sPath,
 						parameters: {
 							expand: "Supplier",
 						},
@@ -62,6 +65,19 @@ sap.ui.define(
 					this.getOwnerComponent().getRouter().navTo("detail", {
 						id: sProductID,
 					})
+
+					// // inform the parent component about the navigation to the detail page
+					// //
+					// // the navigation isn't done within this component because when this component is embedded
+					// // in suppliers/categories component, it should trigger the navigation within the root
+					// // component.
+					// //
+					// // simply always inform the parent component that a navigation to the detail page is needed.
+					// // In the deeply nested use case, the direct parent component forwards this event to the root
+					// // component and a navigation is then triggered from the root component
+					// this.getOwnerComponent().fireEvent("toProduct", {
+					// 	productID: sProductID,
+					// })
 				},
 			}
 		)

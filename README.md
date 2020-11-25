@@ -1,112 +1,56 @@
 # SAUG 2020 Sample Code
 
-## Section 1 - Introduction
+## Section 2 - Navigating between Nested Components
 
-### Introduce Demo Components
+### Reuse Root Component Router
 
-- 3 very similar copmponents
-- All can be run standalone
-- All use same names for views, controllers, routes, etc.
-- All have a List and a Detail view
-- Each component has a different background color defined in its `./css/style.css`.
+We want to navigate from the detail view of one component to the associated detail view of another component.
 
-```css
-.productsPage {
-	background-color: lightblue;
-}
-```
+The `sap.ui.core.routing.Router` method `navTo` supports passing route details and parameters for nested components via the `oComponentTargetInfo` parameter.
 
-### Introduce Root component
+We would need to configure all possible route details for all possible navigations in each nested component for all other components.
 
-Simple component with standard routing configuration to load App & Home views.
+It makes more sense to reuse the routing we already have working via the root component. Each nested component has its own router but it needs to trigger the root component router and have it perform the navigation. We can do this by firing an event to signal a handler that can direct the root component router.
+
+These event handlers need to be running as part of the root component.
+
+We will define the appropriate event handlers using a generic function that reads configuration data to build the event handlers.
 
 ```json
-{
-	"sap.ui5": {
-		"rootView": {
-			"viewName": "yelcho.SAUG2020.view.App",
-			"type": "XML",
-			"async": true,
-			"id": "app"
-		},
-		"routing": {
-			"routes": [
+		eventMappings: {
+			productsComponent: [
 				{
-					"name": "home",
-					"pattern": "",
-					"target": "home"
-				}
-			],
-			"targets": {
-				"home": {
-					"type": "View",
-					"id": "home",
-					"name": "Home",
-					"title": "SAUG SUMMIT 2020 DEMO"
+					name: "toSupplier",
+					route: "suppliers",
+					componentTargetInfo: {
+						suppliers: {
+							route: "detail",
+							parameters: {
+								id: "supplierID",
+							},
+						},
+					},
 				},
-				"notFound": {
-					"type": "View",
-					"id": "notFound",
-					"name": "NotFound",
-					"transition": "show"
-				}
-			}
-		}
-	}
-}
-```
-
-### Enabling Routing in Nested Components
-
-Configuire a Component as Routing Target
-
-```json
-{
-	"sap.ui5": {
-		"componentUsages": {
-			"suppliersComponent": {
-				"name": "yelcho.SAUG2020.reuse.suppliers",
-				"settings": {},
-				"componentData": {},
-				"lazy": true
-			}
-		},
-		"routing": {
-			"routes": [
 				{
-					"name": "suppliers",
-					"pattern": "suppliers",
-					"target": {
-						"name": "suppliers",
-						"prefix": "s",
-						"propagateTitle": true
-					}
-				}
+					name: "toCategory",
+					route: "categories",
+					componentTargetInfo: {
+						categories: {
+							route: "detail",
+							parameters: {
+								id: "categoryID",
+							},
+						},
+					},
+				},
 			],
-			"targets": {
-				"suppliers": {
-					"type": "Component",
-					"usage": "suppliersComponent",
-					"title": "Suppliers Component"
-				}
-			}
-		}
-	}
-}
+		},
 ```
 
-Show nested component navigation working
-
-- Hash string prefix
-- Show code to select menu item from route pattern
-- Refresh propagates hash to nested components via prefix
-- Propagation of titleChanged event
+We can fire the event like this.
 
 ```javascript
-this.getOwnerComponent()
-	.getRouter()
-	.attachTitleChanged(function (oEvent) {
-		oTitlesModel.setData(oEvent.getParameters())
-		document.title = oEvent.getParameter("title")
-	})
+this.getOwnerComponent().fireEvent("toCategory", {
+	categoryID: sCategoryID,
+})
 ```
