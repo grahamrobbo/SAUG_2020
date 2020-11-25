@@ -1,0 +1,146 @@
+{
+	"_version": "1.17.0",
+	"sap.app": {
+		"id": "yelcho.SAUG2020",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"dataSources": {}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "yelcho.SAUG2020.view.App",
+			"type": "XML",
+			"async": true,
+			"id": "app"
+		},
+		"componentUsages": {
+			"suppliersComponent": {
+				"name": "yelcho.SAUG2020.reuse.suppliers",
+				"settings": {},
+				"componentData": {},
+				"lazy": true
+			},
+			"categoriesComponent": {
+				"name": "yelcho.SAUG2020.reuse.categories",
+				"settings": {},
+				"componentData": {},
+				"lazy": true
+			},
+			"productsComponent": {
+				"name": "yelcho.SAUG2020.reuse.products",
+				"settings": {},
+				"componentData": {},
+				"lazy": true
+			}
+		},
+		"dependencies": {
+			"minUI5Version": "1.81",
+			"libs": {
+				"sap.m": {}
+			}
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "yelcho.SAUG2020.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"path": "yelcho.SAUG2020.view",
+				"controlId": "app",
+				"controlAggregation": "pages",
+				"transition": "slide",
+				"bypassed": {
+					"target": "notFound"
+				},
+				"async": true,
+				"propagateTitle": true
+			},
+			"routes": [
+				{
+					"name": "home",
+					"pattern": "",
+					"target": "home"
+				},
+				{
+					"name": "suppliers",
+					"pattern": "suppliers",
+					"target": {
+						"name": "suppliers",
+						"prefix": "s"
+					}
+				},
+				{
+					"name": "categories",
+					"pattern": "categories",
+					"target": {
+						"name": "categories",
+						"prefix": "c"
+					}
+				},
+				{
+					"name": "products",
+					"pattern": "products",
+					"target": {
+						"name": "products",
+						"prefix": "p"
+					}
+				}
+			],
+			"targets": {
+				"home": {
+					"type": "View",
+					"id": "home",
+					"name": "Home",
+					"title": "SAUG SUMMIT 2020 DEMO"
+				},
+				"suppliers": {
+					"type": "Component",
+					"usage": "suppliersComponent",
+					"title": "Suppliers Component"
+				},
+				"categories": {
+					"type": "Component",
+					"usage": "categoriesComponent",
+					"title": "Categories Component"
+				},
+				"products": {
+					"type": "Component",
+					"usage": "productsComponent",
+					"title": "Products Component"
+				},
+				"notFound": {
+					"type": "View",
+					"id": "notFound",
+					"name": "NotFound",
+					"transition": "show"
+				}
+			}
+		}
+	}
+}
