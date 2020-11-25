@@ -50,24 +50,40 @@ sap.ui.define(
 					})
 				},
 				onPressSupplier: function (oEvent) {
+					const oOwnerComponent = this.getOwnerComponent()
+					const oModel = oOwnerComponent.getModel()
 					const sSupplierID = oEvent
 						.getSource()
 						.getBindingContext()
 						.getProperty("SupplierID")
 
-					this.getOwnerComponent().fireEvent("toSupplier", {
+					oOwnerComponent.fireEvent("toSupplier", {
 						supplierID: sSupplierID,
+						supplierKey: encodeURIComponent(
+							"/" +
+								oModel.createKey("Suppliers", {
+									SupplierID: sSupplierID,
+								})
+						),
 					})
 				},
 
 				onPressCategory: function (oEvent) {
+					const oOwnerComponent = this.getOwnerComponent()
+					const oModel = oOwnerComponent.getModel()
 					const sCategoryID = oEvent
 						.getSource()
 						.getBindingContext()
 						.getProperty("CategoryID")
 
-					this.getOwnerComponent().fireEvent("toCategory", {
+					oOwnerComponent.fireEvent("toCategory", {
 						categoryID: sCategoryID,
+						categoryKey: encodeURIComponent(
+							"/" +
+								oModel.createKey("Categories", {
+									CategoryID: sCategoryID,
+								})
+						),
 					})
 				},
 			}

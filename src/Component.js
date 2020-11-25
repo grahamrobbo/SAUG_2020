@@ -11,6 +11,20 @@ sap.ui.define(["yelcho/SAUG2020/base/BaseComponent"], function (BaseComponent) {
 		// see the implementation in BaseComponent for processing the event
 		// mapping
 		eventMappings: {
+			suppliersComponent: [
+				{
+					name: "toProduct",
+					route: "products",
+					componentTargetInfo: {
+						products: {
+							route: "detail",
+							parameters: {
+								id: "productID",
+							},
+						},
+					},
+				},
+			],
 			productsComponent: [
 				{
 					name: "toSupplier",
@@ -20,6 +34,14 @@ sap.ui.define(["yelcho/SAUG2020/base/BaseComponent"], function (BaseComponent) {
 							route: "detail",
 							parameters: {
 								id: "supplierID",
+							},
+							componentTargetInfo: {
+								products: {
+									route: "list",
+									parameters: {
+										basepath: "supplierKey",
+									},
+								},
 							},
 						},
 					},
@@ -32,6 +54,40 @@ sap.ui.define(["yelcho/SAUG2020/base/BaseComponent"], function (BaseComponent) {
 							route: "detail",
 							parameters: {
 								id: "categoryID",
+							},
+							componentTargetInfo: {
+								products: {
+									route: "list",
+									parameters: {
+										basepath: "categoryKey",
+									},
+								},
+							},
+						},
+					},
+				},
+				{
+					name: "toProduct",
+					route: "products",
+					componentTargetInfo: {
+						products: {
+							route: "detail",
+							parameters: {
+								id: "productID",
+							},
+						},
+					},
+				},
+			],
+			categoriesComponent: [
+				{
+					name: "toProduct",
+					route: "products",
+					componentTargetInfo: {
+						products: {
+							route: "detail",
+							parameters: {
+								id: "productID",
 							},
 						},
 					},
