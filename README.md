@@ -1,206 +1,29 @@
-# SAUG 2020 Sample Code
+# ![SAUG](./img/saug_logo.png) SAPUI5 Component Based Development
 
-## Section 3 - Embedding Components in Components
+![SAUG Summit Online](./img/saugsummitonline.jpg)
 
-Show what we are trying to achieve
+---
 
-Note each detail view has contents wrapped in a `<VBox id="box">` control.
+![Slides](./img/SAPUI5_Components.gif)
 
-In `manifest.js` we define the componentUsage for the products component.
+---
 
-```json
-		"componentUsages": {
-			"productsComponent": {
-				"name": "yelcho.SAUG2020.reuse.products",
-				"settings": {},
-				"componentData": {},
-				"lazy": true
-			}
-		},
-```
+The sample code that was used for the presentation can be found in this repository.
 
-We define a new route target with the existing `detail` target as its parent. Parent targets are displayed before the child target.
+### Reference Material
 
-```json
-"targets": {
-	"detail": {
-		"type": "View",
-		"id": "detail",
-		"name": "Detail",
-		"title": "{CompanyName}"
-	},
-	"products": {
-		"type": "Component",
-		"usage": "productsComponent",
-		"parent": "detail",
-		"controlId": "box",
-		"controlAggregation": "items",
-		"id": "productInSupplier"
-	},
-}
-```
+[SAPUI5 Documentation](https://sapui5.hana.ondemand.com/)
 
-The detail route is adjusted to render the new target also passing an alias.
+- [Routing &amp; Navigation - Enabling Routing in Nested Components](https://sapui5.hana.ondemand.com/#/topic/fb19f501b16e4e4991eb6a017770945b)
 
-```json
-{
-	"name": "detail",
-	"pattern": "detail/{id}",
-	"target": {
-		"name": "products",
-		"prefix": "p"
-	}
-}
-```
+- [Routing &amp; Navigation - Working with Multiple Targets](https://sapui5.hana.ondemand.com/#/topic/2c5c84d207d246bc9f733f29df1ff892)
 
-The Product List will now render but it will show all products - not the subset we want for this context.
+- [sap.ui.core.routing.Router - Method navTo](https://sapui5.hana.ondemand.com/#/api/sap.ui.core.routing.Router%23methods/navTo)
 
-The route configuration for the product list needs to be enhanced so we can optionally pass the `basepath` of the context. e.g. `/Suppliers(3)`
+- [sap.ui.core.routing.Router - Event titleChanged](https://sapui5.hana.ondemand.com/#/api/sap.ui.core.routing.Router%23events/titleChanged)
 
-```json
-{
-	"name": "list",
-	"pattern": ":basepath:",
-	"target": "list"
-},
-```
+[Download SAPUI5 SDK](https://tools.hana.ondemand.com/#sapui5)
 
-The data binding in the products list controller needs to be adjusted to apply the `baseline` context when it is passed.
+[Sample Application: Routing with nested components](https://sapui5.hana.ondemand.com/#/entity/sap.ui.core.routing.Router/sample/sap.ui.core.sample.RoutingNestedComponent)
 
-```javascript
-_onMatched: function (oEvent) {
-	const oArgs = oEvent.getParameter("arguments")
-	const sPath = decodeURIComponent(oArgs.basepath || "") + "/Products"
-	const oTable = this.getView().byId("table")
-	const that = this
-
-	oTable.bindItems({
-		path: sPath,
-		parameters: {
-			expand: "Supplier",
-		},
-		...
-
-```
-
-The `oComponentTargetInfo` parameter has to be passed when we navigate from the categories list to the detail. This parameter contains route pattern and parameters for the nested products component.
-
-```javascript
-this.getOwnerComponent()
-	.getRouter()
-	.navTo(
-		"detail",
-		{
-			id: oBindingContext.getProperty("CategoryID"),
-		},
-		{
-			products: {
-				route: "list",
-				parameters: {
-					basepath: encodeURIComponent(oBindingContext.getPath()),
-				},
-			},
-		}
-	)
-```
-
-Now we need to enhance the `eventMappings` configuration we saw earlier to support the navigation from embedded products component inside categories and suppliers components to the product details.
-
-We also need to add details for the new product list optional parameter `basepath`.
-
-These changes mean the event handlers will all pass forward the correct navigation parameters to the root component router.
-
-```json
-eventMappings: {
-	suppliersComponent: [
-		{
-			name: "toProduct",
-			route: "products",
-			componentTargetInfo: {
-				products: {
-					route: "detail",
-					parameters: {
-						id: "productID",
-					},
-				},
-			},
-		},
-	],
-	productsComponent: [
-		{
-			name: "toSupplier",
-			route: "suppliers",
-			componentTargetInfo: {
-				suppliers: {
-					route: "detail",
-					parameters: {
-						id: "supplierID",
-					},
-					componentTargetInfo: {
-						products: {
-							route: "list",
-							parameters: {
-								basepath: "supplierKey",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "toCategory",
-			route: "categories",
-			componentTargetInfo: {
-				categories: {
-					route: "detail",
-					parameters: {
-						id: "categoryID",
-					},
-					componentTargetInfo: {
-						products: {
-							route: "list",
-							parameters: {
-								basepath: "categoryKey",
-							},
-						},
-					},
-				},
-			},
-		},
-		{
-			name: "toProduct",
-			route: "products",
-			componentTargetInfo: {
-				products: {
-					route: "detail",
-					parameters: {
-						id: "productID",
-					},
-				},
-			},
-		},
-	],
-	categoriesComponent: [
-		{
-			name: "toProduct",
-			route: "products",
-			componentTargetInfo: {
-				products: {
-					route: "detail",
-					parameters: {
-						id: "productID",
-					},
-				},
-			},
-		},
-	],
-},
-```
-
-To navigate to the product detail view fire the `toProduct` event.
-
-```javascript
-this.getOwnerComponent().fireEvent("toProduct", {
-	productID: sProductID,
-})
-```
+## ![Yelcho](./img/botline1.jpg)
